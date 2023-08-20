@@ -1,13 +1,13 @@
 var express = require('express');
 var router = express.Router();
-
+const apiVersion = 'v1';
 var { write } = require("../helpers/fileHelpers");
 
 const fileName = "./data/users.json";
 let users = require("../data/users.json");
 
 //==================== GET users (có phân trang, có tìm kiếm từ khóa, có sort). ===========================//
-router.get("/", function (req, res, next) {
+router.get(`/${apiVersion}`, function (req, res, next) {
   const { page = 1, pageSize = 5, search = '', sortBy = 'id', sortOrder = 'asc' } = req.query;
 
   // Tìm kiếm người dùng dựa trên từ khóa
@@ -30,7 +30,7 @@ router.get("/", function (req, res, next) {
 });
 
 //=========================== GET (params)==========================
-router.get("/:id", function (req, res, next) {
+router.get(`/${apiVersion}/:id`, function (req, res, next) {
   const { id } = req.params;
   const found = users.find((p) => {
     return p.id == id;
@@ -44,7 +44,7 @@ router.get("/:id", function (req, res, next) {
 
 
 //======================= POST :tạo mới =====================================
-router.post("/", function (req, res, next) {
+router.post(`/${apiVersion}`, function (req, res, next) {
   const data = req.body;
   console.log(" Data = ", data);
   users.push(data);
@@ -58,7 +58,7 @@ router.post("/", function (req, res, next) {
 });
 
 //============================ Patch :sửa==============================
-router.patch("/:id", function (req, res, next) {
+router.patch(`/${apiVersion}/:id`, function (req, res, next) {
   // lấy tên lấy body để sửa
   const { id } = req.params;
   const data = req.body;
@@ -87,7 +87,7 @@ router.patch("/:id", function (req, res, next) {
 });
 
 //=======================  DELETE (params)=====================================
-router.delete("/:id", function (req, res, next) {
+router.delete(`/${apiVersion}/:id`, function (req, res, next) {
   const { id } = req.params;
   const found = users.find((p) => {
     return p.id == id;
